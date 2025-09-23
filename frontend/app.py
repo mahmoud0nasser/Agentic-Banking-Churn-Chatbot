@@ -115,7 +115,7 @@ def render_sidebar():
 
     for chat in st.session_state.chats:
         created_at = datetime.fromisoformat(chat["created_at"].replace("Z", "+00:00")).astimezone(pytz.timezone("Asia/Riyadh"))
-        label = f"{chat['title']} ({created_at.strftime('%Y-%m-%d %I:%M %p')})"
+        label = f"Chat {created_at.strftime('%Y-%m-%d %H:%M')}"  # Use date as title
         col1, col2 = st.sidebar.columns([3, 1])
         with col1:
             if st.button(label, key=f"chat_{chat['id']}"):
@@ -138,9 +138,8 @@ def render_chat():
         with st.chat_message(message["role"]):
             if message["role"] == "assistant" and message["content"].startswith("|"):
                 try:
-                    # Try parsing as Markdown table
                     lines = message["content"].strip().split("\n")
-                    if len(lines) >= 2:  # Header and separator
+                    if len(lines) >= 2:
                         headers = [h.strip() for h in lines[0].strip("|").split("|")]
                         data = [[c.strip() for c in row.strip("|").split("|")] for row in lines[2:]]
                         df = pd.DataFrame(data, columns=headers)
@@ -167,17 +166,18 @@ def render_chat():
 # Initialize chats on first load
 if not st.session_state.chats:
     st.session_state.chats = fetch_chats()
-    if st.session_state.chats:
-        st.session_state.current_chat_id = st.session_state.chats[0]["id"]
-        chat = load_chat(st.session_state.current_chat_id)
-        if chat:
-            st.session_state.chat_history = chat.get("messages", [])
-    else:
+    if not st.session_state.chats:
+        # Create a new chat if none exist
         new_chat = create_new_chat()
         if new_chat:
             st.session_state.current_chat_id = new_chat["chat_id"]
             st.session_state.chat_history = [{"role": "assistant", "content": new_chat["response"]}]
             st.session_state.chats = fetch_chats()
+    else:
+        st.session_state.current_chat_id = st.session_state.chats[0]["id"]
+        chat = load_chat(st.session_state.current_chat_id)
+        if chat:
+            st.session_state.chat_history = chat.get("messages", [])
 
 # Main Layout
 render_header()
