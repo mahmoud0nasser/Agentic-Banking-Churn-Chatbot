@@ -1,0 +1,13 @@
+fastapi==0.117.1
+uvicorn==0.22.0
+pandas==2.2.3
+numpy==1.26.0
+joblib==1.5.2
+shap==0.48.0
+langchain==0.3.27
+langchain-openai==0.3.33
+langchain-community==0.3.29
+python-dotenv==1.0.0
+langdetect
+tabulate
+tiktoken
