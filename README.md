@@ -9,6 +9,13 @@ The Bank Churn Prediction Chatbot is a web-based application designed to predict
 
 The system leverages a pre-trained Random Forest model with SMOTE, SHAP for explainability, and a language model (GPT-4o-mini) for natural language processing and query routing.
 
+### System Flow Diagram
+
+![Agentic Bank Diagram](Misc/Agentic%20Bank%20Diagram.PNG)  
+*Figure 1: End-to-End Flow of the Agentic Banking Churn Chatbot*
+
+---
+
 ## Features
 - **Churn Prediction**: Predicts whether a customer will churn based on features like CreditScore, Geography, Age, etc.
 - **Explanations**: Uses SHAP to provide the top 3 factors influencing churn predictions.
